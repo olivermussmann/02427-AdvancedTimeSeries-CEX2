@@ -102,13 +102,14 @@ for fig_idx = 1:4
         plot(t_vec, a_true * ones(1, length(t_vec)), 'Color', 'k', 'LineWidth', 3, 'DisplayName', 'True a');
 
         % Labels, grid, and legend
-        ylabel('\theta', 'FontSize', 10, 'FontWeight', 'bold');
-        xlabel('Time step', 'FontSize', 10, 'FontWeight', 'bold');
+        ylabel('\theta', 'FontSize', 12, 'FontWeight', 'bold');
+        xlabel('Time step', 'FontSize', 12, 'FontWeight', 'bold');
         title(['Scenario ', num2str(scenario_idx)], 'FontSize', 12, 'FontWeight', 'bold');
         ylim([-1.5, 1.5])
         grid on;
         box on;
-        legend('show', 'FontSize', 10, 'FontWeight', 'bold', 'Location', 'best', 'interpreter', 'latex');
+        legend('show', 'FontSize', 12, 'FontWeight', 'bold', 'Location', 'best', 'interpreter', 'latex');
+        set(gca, 'FontSize', 12, 'FontWeight', 'bold')
         hold off;
     end
 end
