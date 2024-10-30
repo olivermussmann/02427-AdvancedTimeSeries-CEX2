@@ -5,9 +5,9 @@ clc; clear; close all;
 % Number of observations
 n = [500, 2e3, 5e3, 10e3, 50e3, 100e3];
 
-% Generate synthetic time series data for a SETAR(2,1,1) model
+% Generate time series data for a SETAR(2,1,1) model
 % Define true parameters for simulation
-true_threshold = 0.5;   % True threshold for regime change
+true_threshold = 0.5; % True threshold for regime change
 a1 = 4; b1 = 0.7;     % Parameters for regime 1
 a2 = -4; b2 = 0.7;    % Parameters for regime 2
 sigma = 1;            % Noise standard deviation
@@ -43,7 +43,6 @@ for i = 1:length(n)
     best_params = [];
     best_rss = Inf;
     
-    % Try different initial guesses using multi-start
     options = optimoptions('fminunc', 'Algorithm', 'quasi-newton', 'TolX', 1e-8, 'TolFun', 1e-8);
     
     for ig = 1:size(initial_guesses, 1)
@@ -52,9 +51,8 @@ for i = 1:length(n)
         % Run fminunc from each initial guess
         problem = createOptimProblem('fminunc', 'objective', objective_function, 'x0', initial_guess, 'options', options);
         ms = MultiStart('UseParallel', true);
-        [estimated_params, current_rss] = run(ms, problem, 50);  % Run MultiStart with 50 random starts
+        [estimated_params, current_rss] = run(ms, problem, 50); 
         
-        % Check if this is the best solution
         if current_rss < best_rss
             best_rss = current_rss;
             best_params = estimated_params;
@@ -74,30 +72,18 @@ end
 
 %%
 
-% Font size and weight
 fontSize = 13;
 fontWeight = 'bold';
-
-% Define the custom color
 customBlue = [24/255, 54/255, 104/255];
 
 figure;
-plot(n, RSS_matrix, 'LineWidth', 2, 'Color', customBlue);  % Plot with line and markers
+plot(n, RSS_matrix, 'LineWidth', 2, 'Color', customBlue);
 
-% Set x-ticks at 0, 2e4, 4e4, 6e4, 8e4, 10e4
 xticks([0, 2e4, 4e4, 6e4, 8e4, 10e4]);
-
-% Corrected axis labels with font properties
 xlabel('Number of Observations (n)', 'FontWeight', fontWeight, 'FontSize', fontSize);
 ylabel('Residual Sum of Squares (RSS)', 'FontWeight', fontWeight, 'FontSize', fontSize);
-
-% Title for the plot
 title('RSS vs Sample Size');
-
-% Set axis properties (font weight and size)
 set(gca, 'FontWeight', fontWeight, 'FontSize', fontSize);
-
-% Display a box around the plot
 box on;
 
 %% Function to compute residual sum of squares (RSS) for SETAR(2,1,1) with threshold
