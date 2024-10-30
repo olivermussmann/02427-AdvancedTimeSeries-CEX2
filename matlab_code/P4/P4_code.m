@@ -24,11 +24,11 @@ scenarios = [0.5, 1, 10; -0.5, 1, 10; 0.5, 1, 1; -0.5, 1, 1; ...
 
 % Loop through each figure to group scenarios in pairs
 for fig_idx = 1:4
-    % Create new figure
+    % Create figure
     figure('Position', [700, 300, 900, 400]);
     
     for subplot_idx = 1:2
-        % Determine the scenario index
+        % Determine scenario index
         scenario_idx = (fig_idx - 1) * 2 + subplot_idx;
         
         % Extract parameters for the current scenario
@@ -87,23 +87,16 @@ for fig_idx = 1:4
         % Plot for the current scenario
         subplot(1, 2, subplot_idx);
         hold on;
-
-        % Plot the first 'a_est' with legend name, and the rest without
         plot(t_vec, a_est(1, :), 'Color', [1, 0, 0, 0.5], 'LineWidth', 1, 'DisplayName', '$\hat{\theta}$');
         for i = 2:num_simulations
             plot(t_vec, a_est(i, :), 'Color', [1, 0, 0, 0.5], 'LineWidth', 1, 'HandleVisibility', 'off');
         end
-
-        % Plot the first 'var_a_est' with legend name, and the rest without
         plot(t_vec, var_a_est(1, :), 'Color', [0, 0, 1, 0.5], 'LineWidth', 1, 'DisplayName', 'Var($\hat{\theta}$)');
         for i = 2:num_simulations
             plot(t_vec, var_a_est(i, :), 'Color', [0, 0, 1, 0.5], 'LineWidth', 1, 'HandleVisibility', 'off');
         end
-
         % Plot true value of 'a'
         plot(t_vec, a_true * ones(1, length(t_vec)), 'Color', 'k', 'LineWidth', 3, 'DisplayName', 'True a');
-
-        % Labels, grid, and legend
         ylabel('\theta', 'FontSize', 13, 'FontWeight', 'bold');
         xlabel('Time step', 'FontSize', 13, 'FontWeight', 'bold');
         title(['Scenario ', num2str(scenario_idx)], 'FontSize', 13, 'FontWeight', 'bold');
@@ -115,8 +108,8 @@ for fig_idx = 1:4
         hold off;
     end
 end
-%%
 
+% Plot time series
 figure('Position', [700, 300, 900, 400]);
 subplot(1,2,1)
 plot(t_vec, x_vec, 'Color', [0, 0, 1, 0.5])
