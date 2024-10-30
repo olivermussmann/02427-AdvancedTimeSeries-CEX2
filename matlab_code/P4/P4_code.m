@@ -76,6 +76,8 @@ for fig_idx = 1:4
                 x_estimates(t) = Z(1);          % Estimated state
                 a_estimates(t) = Z(2);          % Estimated parameter a
                 var_estimates(t) = P(2, 2);     % Estimated variance of a
+                x_vec(t) = x_true;
+                y_vec(t) = y_t;
             end
 
             a_est(sim, :) = a_estimates;
@@ -102,17 +104,37 @@ for fig_idx = 1:4
         plot(t_vec, a_true * ones(1, length(t_vec)), 'Color', 'k', 'LineWidth', 3, 'DisplayName', 'True a');
 
         % Labels, grid, and legend
-        ylabel('\theta', 'FontSize', 12, 'FontWeight', 'bold');
-        xlabel('Time step', 'FontSize', 12, 'FontWeight', 'bold');
-        title(['Scenario ', num2str(scenario_idx)], 'FontSize', 12, 'FontWeight', 'bold');
+        ylabel('\theta', 'FontSize', 13, 'FontWeight', 'bold');
+        xlabel('Time step', 'FontSize', 13, 'FontWeight', 'bold');
+        title(['Scenario ', num2str(scenario_idx)], 'FontSize', 13, 'FontWeight', 'bold');
         ylim([-1.5, 1.5])
         grid on;
         box on;
-        legend('show', 'FontSize', 12, 'FontWeight', 'bold', 'Location', 'best', 'interpreter', 'latex');
-        set(gca, 'FontSize', 12, 'FontWeight', 'bold')
+        legend('show', 'FontSize', 13, 'FontWeight', 'bold', 'Location', 'southeast', 'interpreter', 'latex');
+        set(gca, 'FontSize', 13, 'FontWeight', 'bold')
         hold off;
     end
 end
+%%
+
+figure('Position', [700, 300, 900, 400]);
+subplot(1,2,1)
+plot(t_vec, x_vec, 'Color', [0, 0, 1, 0.5])
+ylabel('X_t', 'FontSize', 13, 'FontWeight', 'bold');
+xlabel('Time step', 'FontSize', 13, 'FontWeight', 'bold');
+set(gca, 'FontSize', 13, 'FontWeight', 'bold')
+ylim([-6 6])
+grid on;
+box on;
+subplot(1,2,2)
+plot(t_vec, y_vec, 'Color', [1, 0, 0, 0.5])
+ylabel('Y_t', 'FontSize', 13, 'FontWeight', 'bold');
+xlabel('Time step', 'FontSize', 13, 'FontWeight', 'bold');
+set(gca, 'FontSize', 13, 'FontWeight', 'bold')
+ylim([-6 6])
+grid on;
+box on;
+
 
 current_file = 'P4_code.m';
 new_directory = '/home/olivermussmann/Documents/GitHub/02427-AdvancedTimeSeries-CEX2/matlab_code/P4';
