@@ -3,8 +3,8 @@ clc; clear; close all;
 % SETAR(2,1,1) Parameter Estimation for Contour Plots
 
 % Define the grid for the two parameters
-p1_values = linspace(3.5, 4.5, 100);  % Example grid for p1 (a1 -> theta_1)
-p2_values = linspace(0.6, 0.8, 100);  % Example grid for p2 (b1 -> theta_2)
+p1_values = linspace(3.5, 4.5, 100);  % grid for p1 (a1 -> theta_1)
+p2_values = linspace(0.6, 0.8, 100);  % grid for p2 (b1 -> theta_2)
 
 % Generate the grid
 [p1_grid, p2_grid] = meshgrid(p1_values, p2_values);
@@ -18,10 +18,10 @@ a1 = 4; b1 = 0.7;     % True parameters for regime 1
 a2 = -4; b2 = 0.7;    % True parameters for regime 2
 sigma = 1;            % Noise standard deviation
 
-% Generate synthetic time series data
+% Generate time series data
 n = 10e3;  % Total number of observations
 X = zeros(n, 1);
-rng(1);  % For reproducibility
+rng(1);  
 
 % Simulate the SETAR(2,1,1) process
 for t = 2:n
@@ -33,7 +33,7 @@ for t = 2:n
 end
 
 % Define the loss function calculation (Q_N)
-% This function computes the sum of squared residuals for a given p1, p2
+% Computes the sum of squared residuals for a given p1, p2
 for i = 1:length(p1_values)
     for j = 1:length(p2_values)
         p1 = p1_grid(i, j);
@@ -45,16 +45,13 @@ for i = 1:length(p1_values)
     end
 end
 
-% Subsets of the data to be used for contour plots
+% Subsets of the data
 subsets = {1:10e3, 1:5e3, 1:1e3, 1:1e2, 5001:5500, 5001:5050};
 
-% Create a large figure window
 figure('Units', 'normalized', 'OuterPosition', [0 0 0.5 1]);  % This makes the figure fullscreen
-
-% Create a 3x2 tiled layout for more compact subplots
 t = tiledlayout(3, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
-t.TileSpacing = 'compact';  % Remove extra space between plots
-t.Padding = 'compact';      % Remove padding around the layout
+t.TileSpacing = 'compact';  
+t.Padding = 'compact';     
 
 for s = 1:length(subsets)
     subset = subsets{s};
@@ -70,18 +67,12 @@ for s = 1:length(subsets)
         end
     end
     
-    % Create subplot in 3x2 layout
     nexttile;
     contourf(p1_grid, p2_grid, Q_N_subset, 20, 'LineColor', 'none');
     colorbar;
-    
-    % Label the axes with theta_1 and theta_2
     xlabel('\theta_1', 'FontSize', 12, 'FontWeight', 'bold');  % For parameter p1 (a1)
     ylabel('\theta_2', 'FontSize', 12, 'FontWeight', 'bold');  % For parameter p2 (b1)
-    
     title(sprintf('Subset %d:%d', subset(1), subset(end)), 'FontSize', 12);
-    
-    % Plot the specific point (0.7, 4) in each subplot
     hold on;
     plot(4, 0.7, 'ro', 'MarkerSize', 8, 'MarkerFaceColor', 'r');  % Red circle for the point
     hold off;
